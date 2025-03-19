@@ -1,13 +1,17 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+proce
 venv/
 .venv/
 .env/
 *.env
 Pipfile
 Pipfile.lock
+
+synthetic_data/*
+processed_data/*
+output/*
 
 .ipynb_checkpoints/
 

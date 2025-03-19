@@ -88,12 +88,13 @@ def impute_missing_values_acs_people(acs_people_df: pd.DataFrame) -> pd.DataFram
     return acs_people_df
 
 
-acs_people_df = read_acs_people("acs_people.csv")
-columns_to_drop = ["school_type", "citizen", "divorce_lstyear", "marriage_lstyear", "fertility_lstyear",
-                   "widow_lstyear"]
-acs_people_df = acs_people_df.drop(columns=columns_to_drop, errors='ignore')
-acs_people_df = acs_people_df[acs_people_df["age"] > 0]
-acs_people_imputed_df = impute_missing_values_acs_people(acs_people_df)
-acs_people_imputed_df.to_csv("acs_people_imputed.csv", index=False)
+if __name__ == "__main__":
+    acs_people_df = read_acs_people("processed_data/synthetic_population_generation/source_ACS/acs_people.csv")
+    columns_to_drop = ["school_type", "citizen", "divorce_lstyear", "marriage_lstyear", "fertility_lstyear",
+                    "widow_lstyear"]
+    acs_people_df = acs_people_df.drop(columns=columns_to_drop, errors='ignore')
+    acs_people_df = acs_people_df[acs_people_df["age"] > 0]
+    acs_people_imputed_df = impute_missing_values_acs_people(acs_people_df)
+    acs_people_imputed_df.to_csv("acs_people_imputed.csv", index=False)
 
-print("Data processing complete. Imputed dataset saved as 'acs_people_imputed.csv'.")
+    print("Data processing complete. Imputed dataset saved as 'acs_people_imputed.csv'.")
