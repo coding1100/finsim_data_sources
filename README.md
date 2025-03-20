@@ -6,7 +6,7 @@ pip install -r requirements.txt
 ```
 # Analytics
 
-## Run plot_categorical_combinations.py
+### Run plot_categorical_combinations.py
 
 Run by setting paths:
 ```
