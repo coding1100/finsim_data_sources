@@ -7,7 +7,10 @@ import pandas as pd
 from itertools import combinations
 from sdv.metadata import Metadata
 
-DATA_IN_DIRECTORY = "processed_data/synthetic_population_generation/"
+import argparse
+
+
+# args.DATA_IN_DIRECTORY = "processed_data/synthetic_population_generation/"
 
 def plot_categorical_combinations(df_a, df_b, dataset_a_name, dataset_b_name, categorical_cols, max_cols=2):
 
@@ -58,9 +61,17 @@ def plot_categorical_combinations(df_a, df_b, dataset_a_name, dataset_b_name, ca
 
 
 if __name__ == "__main__":
-    source_df = pd.read_csv(DATA_IN_DIRECTORY + 'source_ACS/acs_people.csv')
-    gen_df = pd.read_csv("output/people.csv")
-    ref_df = pd.read_csv(DATA_IN_DIRECTORY + "../agents/people.csv")
+    parser = argparse.ArgumentParser(description ='Plot Categorical Combinations')
+    parser.add_argument('--data_in_directory', type=str, help='Path to dataset')
+    parser.add_argument('--source_ACS_csv', type=str, help='Path to source ACS CSV')
+    parser.add_argument('--ref_agents_csv', type=str, help='Path to ref agents CSV')
+    parser.add_argument('--output_file_path', type=str, help='Path to output CSV file')
+    args = parser.parse_args()
+
+    source_df = pd.read_csv(args.source_ACS_csv)
+    gen_df = pd.read_csv(args.output_file_path)
+    ref_df = pd.read_csv(args.ref_agents_csv)
+    
     common_columns = list(set(source_df) & set(gen_df))
 
     course_df = source_df[common_columns]
@@ -71,12 +82,11 @@ if __name__ == "__main__":
         table_name='gen_df'
 )
 
-
     categorical_columns = [column for column in metadata.tables["gen_df"].columns if metadata.tables["gen_df"].columns[column]['sdtype'] == "categorical"] 
     categorical_columns = [col for col in categorical_columns if col in source_df.columns and col in gen_df.columns]
     categorical_columns = [col for col in categorical_columns if len(source_df[col].unique()) > 1 and len(gen_df[col].unique()) > 1]
     print(categorical_columns)
     plot_categorical_combinations(source_df, gen_df, "S", "G", categorical_columns)
-# S: Source data
-# G: Generated data
-# RD: Relative difference (between -100% and 100%)
+    # S: Source data
+    # G: Generated data
+    # RD: Relative difference (between -100% and 100%)
